@@ -1,0 +1,2 @@
+Flag: CTF{cat_it_out}
+
