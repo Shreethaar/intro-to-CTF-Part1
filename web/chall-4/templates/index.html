@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Downloader</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>File Downloader</h1>
+    <form id="downloadForm" action="/download" method="get">
+        <label for="filename">Enter filename:</label>
+        <input type="text" id="filename" name="file" required>
+        <button type="submit" id="downloadButton">Download</button>
+    </form>
+
+    <div id="errorMessage" class="error-message"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
