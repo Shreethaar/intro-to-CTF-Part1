@@ -1,0 +1,3 @@
+[submodule "osint/google-dorking/flag-is-here"]
+	path = osint/google-dorking/flag-is-here
+	url = https://github.com/Shreethaar/intro-to-CTF-Part1.git
