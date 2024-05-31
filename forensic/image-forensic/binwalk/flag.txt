@@ -1,0 +1,1 @@
+Flag: CTF{binwalk-for-extract-embedded-files}
