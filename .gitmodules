@@ -1,3 +1,6 @@
 [submodule "osint/google-dorking/flag-is-here"]
 	path = osint/google-dorking/flag-is-here
+	url = https://github.com/Shreethaar/flag-is-here
+[submodule "web/chall-5-untested/sqlmap-test"]
+	path = web/chall-5-untested/sqlmap-test
 	url = https://github.com/Shreethaar/intro-to-CTF-Part1.git
