@@ -1,20 +1,34 @@
-version: '3'
+version: '3.8'
+
 services:
-  web1:
-    image: web1_image
-    ports:
-      - "8001:80"
-  web2:
-    image: web2_image
-    ports:
-      - "8002:80"
-  web3:
-    image: web3_image
-    ports:
-      - "8003:80"
+  app:
+    build: .
+    volumes:
+      - ./chall-1:/chall-1
+    environment:
+      FLASK_ENV: development
+    depends_on:
+      - db
+
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./chall-1/static:/chall-1/static
+    depends_on:
+      - app
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: trevorphilips  
+      POSTGRES_PASSWORD: suzy4557
+      POSTGRES_DB: flask_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
