@@ -75,6 +75,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 });
 
+app.get('/secret',(req,res) => {
+	res.send('CTF{path-traversal-vuln}');
+});
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
