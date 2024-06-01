@@ -1,18 +1,18 @@
 #! /usr/bin/python3
 
 def encryptDecrypt(input):
-	key = ['C', 'T', 'F']
+	key = ['5']
 	output = []
 	
 	for i in range(len(input)):
-		xor_num = ord(input[i]) ^ ord(key[i % len(key)])
+		xor_num = ord(input[i]) ^ ord(key[i%len(key)])
 		output.append(chr(xor_num))
 	
 	return ''.join(output)
 
 
 def main():
-	encrypted = encryptDecrypt("CTF{xor-encrypt-decrypt");
+	encrypted = encryptDecrypt("CTF{xor-encrypt-decrypt}");
 	print("Encrypted:"+encrypted);
 	
 	decrypted = encryptDecrypt(encrypted);
