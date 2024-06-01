@@ -4,3 +4,6 @@
 [submodule "web/chall-5-untested/sqlmap-test"]
 	path = web/chall-5-untested/sqlmap-test
 	url = https://github.com/Shreethaar/intro-to-CTF-Part1.git
+[submodule "web/chall-8/UnSAFE_Bank"]
+	path = web/chall-8/UnSAFE_Bank
+	url = https://github.com/Shreethaar/UnSAFE_Bank.git
