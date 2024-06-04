@@ -1,4 +1,4 @@
-
+#! /usr/bin/python3
 def xor_decrypt(cipher,key):
     return ''.join(chr(ord(char)^key) for char in cipher)
 

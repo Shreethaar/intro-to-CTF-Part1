@@ -1,0 +1,1 @@
+cat random-text.txt | grep -i CTF{.*} --color=always
