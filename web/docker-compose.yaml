@@ -1,34 +1,35 @@
-version: '3.8'
+version: '3'
 
 services:
-  app:
-    build: .
-    volumes:
-      - ./chall-1:/chall-1
-    environment:
-      FLASK_ENV: development
-    depends_on:
-      - db
-
+  flask1:
+    build:
+      context: ./chall-1
+      dockerfile: Dockerfile-flask1
+    ports:
+      - "5001:5000"
+  
+  flask2:
+    build:
+      context: ./chall-2
+      dockerfile: Dockerfile-flask2
+    ports:
+      - "5002:5000"
+  
+  node:
+    build:
+      context: ./chall-3
+      dockerfile: Dockerfile-node
+    ports:
+      - "3000:3000"
+  
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./chall-1/static:/chall-1/static
+      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - app
-
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: trevorphilips  
-      POSTGRES_PASSWORD: suzy4557
-      POSTGRES_DB: flask_db
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+      - flask1
+      - flask2
+      - node
 
