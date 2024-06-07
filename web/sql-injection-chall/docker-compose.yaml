@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   app:
@@ -6,7 +6,8 @@ services:
     ports:
       - "1337:1337"
     volumes:
-      - .:/app
+      - .:/chall-4:/app
       - ./downloads:/downloads
-
+    environment:
+      - FLASK_ENV=development
 
