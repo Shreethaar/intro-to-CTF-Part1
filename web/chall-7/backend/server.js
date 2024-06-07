@@ -5,7 +5,7 @@ const path = require('path');
 const mysql = require('mysql');
 
 const app = express();
-const port = 3000;
+const port = 9959;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

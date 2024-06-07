@@ -1,0 +1,178 @@
+package components
+
+import (
+	"github.com/nkcyber/sql-injection-lab/db"
+	"github.com/alecthomas/chroma/v2/quick"
+)
+
+templ DocumentViewer(query, securityCode string, err error, documents []db.Document) {
+	<html>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Document Viewer</title>
+			<script src="https://cdn.tailwindcss.com"></script>
+		</head>
+		<body class="bg-gray-100">
+			@header(securityCode)
+			@serverView(query, err)
+			@documentsView(documents)
+		</body>
+	</html>
+}
+
+templ header(securityCode string) {
+	// contains title text and input for user's security code
+	<div class="bg-gradient-to-r from-cyan-500 to-blue-500 pb-12">
+		<section class="pt-10 md:pt-16">
+			<div class="container max-w-screen-xl mx-auto px-4">
+				<div class="text-center">
+					<h2 class="text-white font-normal text-gray-900 text-4xl md:text-5xl leading-none mb-4">
+						Document Viewer
+					</h2>
+					<h3 class="text-white font-semibold text-gray-900 text-md leading-none mb-6">
+						Enter your security code to view your secret documents.
+					</h3>
+				</div>
+			</div>
+		</section>
+		<section>
+			<div>
+				<div class="container max-w-screen-xl mx-auto px-4">
+					<div class="grid place-items-center">
+						@input(securityCode)
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+}
+
+templ serverView(query string, err error) {
+	// shows the "behind the scenes" of how the SQL command is interpreted
+	<div class="bg-slate-700 py-6">
+		<section class="container max-w-screen-xl mx-auto px-4 text-white">
+			<h1 class="font-medium text-3xl md:text-4xl mb-5">
+				SQL Query
+			</h1>
+			<div class={ codeBackground(), "px-5", "py-3", "rounded-lg" }>
+				@templ.Raw(highlight(query))
+			</div>
+		</section>
+		if err != nil {
+			<section class="container max-w-screen-xl mx-auto px-4 text-white">
+				<div class="bg-slate-700 py-6">
+					<div class={ codeBackground(), "font-mono", "px-5", "py-3", "rounded-lg" }>
+						<span>
+							Error:
+						</span>
+						<span class="text-red-400">
+							{ err.Error() }
+						</span>
+						// Unfortunately, this error is of type 'errors.errorString', so
+						// there isn't a destinctive error type to match on.
+						// This is confusing enough that we provide a hint, for pedagogical purposes.
+						if err.Error() == "sql: expected 0 destination arguments in Scan, not 3" {
+							<p class="pt-3 text-yellow-200 leading-relaxed">
+								Hint: This error means you're returning zero fields, 
+								but the server expects three (name, securityCode, content).
+							</p>
+							<p class="pt-2 text-yellow-200 leading-relaxed">
+								Make sure your query doesn't end with a semicolon then a comment (e.g.
+								<code class="text-white">
+									;--
+								</code>) because the semicolon creates two queries, 
+								the last of which is just a comment, which returns nothing.
+							</p>
+						}
+					</div>
+				</div>
+			</section>
+		}
+	</div>
+}
+
+css codeBackground() {
+	background-color: #282a36;
+	overflow-x: auto;
+	line-height: 1em;
+}
+
+templ documentsView(documents []db.Document) {
+	<section class="pb-12 pt-6">
+		<div class="container max-w-screen-xl mx-auto px-4">
+			<h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-5">Documents</h1>
+			if len(documents) > 0 {
+				@documentsGrid(documents)
+			} else {
+				<div class="text-gray-700 text-center text-xl">
+					No results
+				</div>
+			}
+		</div>
+	</section>
+}
+
+templ documentsGrid(documents []db.Document) {
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+		for _, document := range documents {
+			<div class="bg-gray-50 px-8 py-10 rounded-md">
+				<div class="relative mb-4">
+					<h4 class="font-medium text-gray-900 text-lg">
+						{ document.Name }
+					</h4>
+					<h5 class="font-small text-gray-500 text-md relative z-10">
+						Security Code: 
+						<span class="font-monospace">{ document.SecurityCode }</span>
+					</h5>
+				</div>
+				<p class="font-normal text-gray-500 text-md mb-4">
+					{ document.Content }
+				</p>
+			</div>
+		}
+	</div>
+}
+
+script updateQueryParams() {
+	window.location.search = "?securityCode="
+                           + encodeURIComponent(document.getElementById('securityCode').value);
+}
+
+templ input(securityCode string) {
+	<label for="default-search" class="mb-2 text-sm font-medium sr-only text-white">Search</label>
+	<div class="relative w-full md:w-1/2">
+		<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+			// svg of search icon
+			<svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path>
+			</svg>
+		</div>
+		<input
+			type="text"
+			id="securityCode"
+			class="block w-full p-4 ps-10 text-sm border  rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-slate-500 focus:border-slate-500"
+			placeholder="Enter your security code"
+			onkeydown="if (event.key === 'Enter') document.getElementById('submit').click()"
+			autofocus
+			value={ securityCode }
+		/>
+		<button
+			id="submit"
+			class="text-white absolute bg-blue-600 bottom-2.5 end-2.5 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium hover:bg-blue-700 px-4 py-2 rounded-lg text-sm"
+			onclick={ updateQueryParams() }
+		>
+			Search
+		</button>
+	</div>
+}
+
+func highlight(query string) string {
+	// highlight SQL using Chroma
+	buf := new(bytes.Buffer)
+	err := quick.Highlight(buf, query, "sql", "html", "dracula")
+	if err != nil {
+		return query
+	}
+	return buf.String()
+}

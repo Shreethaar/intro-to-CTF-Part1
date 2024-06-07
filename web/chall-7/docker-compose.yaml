@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "9959:9959"
+    volumes:
+      - /backend/uploads:/app/uploads
+      - .:/app
+      - /app/node_modules
+    command: npm start
+
+
