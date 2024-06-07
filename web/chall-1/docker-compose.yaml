@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"  # Map container port 5000 to host port 5000
+    volumes:
+      - .:/app  # Mount current directory to /app in the container
+
+
