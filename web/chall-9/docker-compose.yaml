@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - GO_ENV=production
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: documents
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./example_seed.sql:/docker-entrypoint-initdb.d/example_seed.sql
+
+volumes:
+  db_data:
+

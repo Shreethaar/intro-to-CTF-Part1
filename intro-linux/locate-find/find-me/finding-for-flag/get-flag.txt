@@ -1,0 +1,1 @@
+CTF{u-received-a-fake-flag}
