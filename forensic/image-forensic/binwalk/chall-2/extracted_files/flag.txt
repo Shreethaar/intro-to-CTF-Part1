@@ -1,0 +1,1 @@
+CTF{zip_embed_in_png}
