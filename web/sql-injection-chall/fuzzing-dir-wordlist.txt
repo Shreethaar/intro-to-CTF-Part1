@@ -36,4 +36,3 @@ debug
 app/webhooks
 jolokia
 fetch
-secret
