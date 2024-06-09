@@ -1,6 +1,8 @@
 # Use the official Golang image as a base image
 FROM golang:1.20-alpine
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
@@ -14,10 +16,11 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN go build -o main .
+RUN go build -o main=0755 .
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
+
 
 # Command to run the executable
 CMD ["./main"]
