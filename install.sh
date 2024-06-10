@@ -14,5 +14,5 @@ sudo apt-get install -y steghide
 sudo apt-get install -y binwalk
 sudo apt-get install -y sherlock
 sudo apt-get install -y gedit
-sudo apt-get install -y ffzf
+sudo apt-get install -y ffuf
 
