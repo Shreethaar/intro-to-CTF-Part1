@@ -1,6 +1,7 @@
 #! /bin/bash
 
 if ["$SEUID" -ne 0]; then
+	echo "Run this command: $ sudo ./install.sh " 
 	exit 1
 fi
 
